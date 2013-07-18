@@ -67,11 +67,15 @@ final class Loader
 
             if (is_callable(array($controller, $method))) {
                 return call_user_func_array(array($controller, $method), $args);
-            } else {                
+            } else {
+                $this->app->response()->status(404);
+                $this->app->response()->write('You made a bad request');
                 return false;
             }
         } else {
-            trigger_error('Error: Could not load controller ' . $file . '!');
+            //trigger_error('Error: Could not load controller ' . $file . '!');
+            $this->app->response()->status(404);
+            $this->app->response()->write('You made a bad request');
             return false;
         }
     }
