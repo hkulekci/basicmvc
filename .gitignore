@@ -1,0 +1,4 @@
+# Ignored Testing File
+test/*
+
+vendor/*
