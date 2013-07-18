@@ -57,8 +57,6 @@ Basic MVC for Slim Framework
 
         echo $basicmvc->run($route, $args);
 
-        print_r($basicmvc->app_registry());
-
     })->via('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD');
 
     $app->run();
