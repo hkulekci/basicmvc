@@ -1,16 +1,6 @@
 {
     "name": "hkulekci/basicmvc",
     "description": "Basic MVC for Frameworks",
-    "require": {
-        "slim/slim": "2.*",
-        "slim/extras": "2.*",
-        "twig/twig": "1.*"
-    },
-    "require-dev": {
-        "slim/slim": "2.*",
-        "slim/extras": "2.*",
-        "twig/twig": "1.*"
-    },
     "license": "GPL-3.0",
     "authors": [
         {
@@ -18,9 +8,11 @@
             "email": "haydarkulekci@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "slim/slim": "2.*",
+        "slim/extras": "2.*",
+        "twig/twig": "1.*"
     },
     "autoload": {
         "psr-0": {
