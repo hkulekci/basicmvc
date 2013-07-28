@@ -15,6 +15,7 @@ abstract class Controller
     public function __construct($registry)
     {
         $this->registry = $registry;
+        $this->data = array_merge((array)$this->config->get("template_constants"), (array)$this->data);
     }
 
     public function __get($key)
@@ -63,7 +64,10 @@ abstract class Controller
         if (!is_null($status)) {
             $this->app->response()->status($status);
         }
-        $this->app->view()->appendData($data);
+
+        $this->data = array_merge((array)$data, (array)$this->data);
+
+        $this->app->view()->appendData($this->data);
         return $this->app->view()->fetch($template_file);
     }
 

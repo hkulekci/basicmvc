@@ -18,6 +18,8 @@ class BasicMVC
         $this->registry = new Registry();
         $this->registry->set("app", $app);
 
+        $configs = new Config();
+
         if (!isset($app_config['controllers_path']) ||!isset($app_config['models_path']))
         {
             trigger_error("Directory information is required for controllers and models");
@@ -30,7 +32,15 @@ class BasicMVC
             return;
         }
 
-        $configs = new Config();
+        if (isset($app_config['template_constants']) && $app_config['template_constants'])
+        {
+            $configs->set("template_constants", $app_config['template_constants']);
+        }
+        else
+        {
+            $configs->set("template_constants", array());
+        }
+
         $configs->set("controllers_path", $app_config['controllers_path']);
         $configs->set("models_path", $app_config['models_path']);
         $this->registry->set("config", $configs);
