@@ -10,9 +10,7 @@ namespace BasicMVC;
 abstract class Controller
 {
     protected $registry;
-    protected $template;
     protected $data = array();
-    protected $status = 200;
 
     public function __construct($registry)
     {
@@ -27,6 +25,25 @@ abstract class Controller
     public function __set($key, $value)
     {
         $this->registry->set($key, $value);
+    }
+
+    public function checkRequestMethod($required_method)
+    {
+        $result = false;
+        if ($required_method == "GET")
+            $result = $this->getRequestMethod() == \Slim\Http\Request::METHOD_GET;
+        else if ($required_method == "POST")
+            $result = $this->getRequestMethod() == \Slim\Http\Request::METHOD_POST;
+        else if ($required_method == "PUT")
+            $result = $this->getRequestMethod() == \Slim\Http\Request::METHOD_PUT;
+        else if ($required_method == "DELETE")
+            $result = $this->getRequestMethod() == \Slim\Http\Request::METHOD_DELETE;
+        return $result;
+    }
+
+    public function getRequestMethod()
+    {
+        return $this->app->request()->getMethod();
     }
 
     public function getChild($directory, $controller, $method = "index", $args = array())
