@@ -49,14 +49,32 @@ abstract class Controller
 
     public function getChild($directory, $controller, $method = "index", $args = array())
     {
-        return $this->load->controller(
-            array(
-                "directory" => $directory,
-                "controller" => $controller,
-                "method" => $method
-                ), 
-            $args
-            );
+
+        $path = $this->config->get("controllers_path");
+        $file = $path . ( $directory ? $directory . "/" : "" ) . $controller . ".php" ;
+        $class = $controller;
+        $method = $method;
+
+        if (is_file($file)) {
+            $class = '\\Controller\\' . preg_replace('/[^a-zA-Z0-9]/', '', $class);
+        }
+
+        if (file_exists($file)) {
+            include_once($file);
+            
+            $controller = new $class($this->registry);
+
+            if (is_callable(array($controller, $method))) {
+                return call_user_func_array(array($controller, $method), $args);
+            } else {
+                trigger_error('Error: Method does not exist for child [' . $controller . '][' . $method . ']!');
+                return false;
+            }
+        } else {
+            trigger_error('Error: File does not exist for child [' . $file . ']!');
+            return false;
+        }
+
     }
 
     public function render($template_file, $data = array(), $status = null)
