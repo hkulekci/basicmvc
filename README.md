@@ -29,7 +29,7 @@ Basic MVC for Slim Framework
 
     use BasicMVC\BasicMVC;
 
-    $twigView = new \Slim\Extras\Views\Twig();
+    $twigView = new \Slim\Views\Twig();
 
     $app = new \Slim\Slim(
         array(
@@ -40,11 +40,13 @@ Basic MVC for Slim Framework
             )
         );
 
-    $request = new \Slim\Http\Request($app);
-
     $basicmvc = new BasicMVC($app, array(
         "controllers_path"   => APP_DIR . "public/controller/",
         "models_path"        => APP_DIR . "public/model/",
+        "library_path"       => APP_DIR . "public/system/library/",
+        "template_constants" => array(
+            "APP_THEME"     => APP_THEME
+        )
     ));
 
     $app->map('/(:directory(/:controller(/:method(/:args+))))', function ($directory = "home", $controller = "home", $method = "index", $args = array()) use($app, $basicmvc) {
@@ -57,6 +59,6 @@ Basic MVC for Slim Framework
 
         echo $basicmvc->run($route, $args);
 
-    })->via('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD');
+    })->via('GET', 'POST', 'PUT', 'DELETE');
 
     $app->run();
