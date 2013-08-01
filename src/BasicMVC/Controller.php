@@ -77,6 +77,11 @@ abstract class Controller
 
     }
 
+    public function redirect($path)
+    {
+        $this->app->redirect($path);
+    }
+
     public function render($template_file, $data = array(), $status = null)
     {
         if (!is_null($status)) {

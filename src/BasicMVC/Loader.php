@@ -25,6 +25,20 @@ final class Loader
     {
         $this->registry->set($key, $value);
     }
+
+    public function library($library, $name = "")
+    {
+        $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
+        $file = $this->config->get("library_path") . $library . ".php";
+        if (file_exists($file)) { 
+            include_once($file);
+            $this->registry->set( ($name) ? $name : str_replace('/', '_', $library), new $class($this->registry));
+        } else {
+            trigger_error('Error: Could not load library.' . $file . '!');
+            exit();
+        }
+        return true;
+    }
             
     public function model($model)
     {
