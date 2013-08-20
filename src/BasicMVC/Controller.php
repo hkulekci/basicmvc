@@ -77,7 +77,7 @@ abstract class Controller
 
     }
 
-    public function redirect($path)
+    public function redirect($path, $status = 302)
     {
         $this->app->redirect($path);
     }
