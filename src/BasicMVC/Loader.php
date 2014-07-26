@@ -30,7 +30,7 @@ final class Loader
     {
         $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
         $file = $this->config->get("library_path") . $library . ".php";
-        if (file_exists($file)) { 
+        if (file_exists($file) && realpath($file) == $file) {
             include_once($file);
             $this->registry->set( ($name) ? $name : str_replace('/', '_', $library), new $class($this->registry));
         } else {
@@ -39,7 +39,7 @@ final class Loader
         }
         return true;
     }
-            
+
     public function model($model)
     {
         $model_paths = explode('/', $model);
@@ -51,7 +51,7 @@ final class Loader
 
             $class = '\\Model\\Model' . preg_replace('/[^a-zA-Z0-9]/', '', $model);
             $file = $this->config->get("models_path") . $model . ".php";
-            if (file_exists($file)) { 
+            if (file_exists($file) && realpath($file) == $file) {
                 include_once($file);
                 $this->registry->set('model_' . str_replace('/', '_', $model), new $class($this->registry));
             } else {
@@ -60,8 +60,8 @@ final class Loader
             }
             return true;
 
-        }     
-        
+        }
+
     }
 
     public function controller($route, $args){
@@ -74,9 +74,9 @@ final class Loader
             $class = '\\Controller\\' . preg_replace('/[^a-zA-Z0-9]/', '', $class);
         }
 
-        if (file_exists($file)) {
+        if (file_exists($file) && realpath($file) == $file) {
             include_once($file);
-            
+
             $controller = new $class($this->registry);
 
             if (is_callable(array($controller, $method))) {
@@ -94,4 +94,4 @@ final class Loader
         }
     }
 
-} // END Loader class 
+} // END Loader class
