@@ -3,7 +3,7 @@ namespace tests;
 
 use BasicMVC\BasicMVC;
 
-class BasicMVC_Test extends BaseCase
+class BasicMVC_Test extends \PHPUnit_Framework_TestCase
 {
     protected $session;
     protected $twig;
@@ -22,7 +22,7 @@ class BasicMVC_Test extends BaseCase
                 'view'              => $this->twig
                 )
             );
-        $this->basicmvc = new BasicMVC($app, array(
+        $this->basicmvc = new BasicMVC($this->app, array(
             "controllers_path"   => $this->app_dir,
             "models_path"        => $this->app_dir,
             "library_path"       => $this->app_dir

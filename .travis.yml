@@ -3,4 +3,7 @@ php:
     - 5.4
     - 5.3
 before_script:
-    - composer install --dev
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar install --dev
+script:
+    - phpunit --configuration phpunit.xml.dist
