@@ -26,17 +26,35 @@ final class Loader
         $this->registry->set($key, $value);
     }
 
+    /**
+     * Load Library to registry
+     * @param  string|object                $level
+     * @throws \InvalidFileException        If invalid file
+     */
     public function library($library, $name = "")
     {
-        $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
-        $file = $this->config->get("library_path") . $library . ".php";
-        if (file_exists($file) && realpath($file) == $file) {
-            include_once($file);
-            $this->registry->set( ($name) ? $name : str_replace('/', '_', $library), new $class($this->registry));
+        if (is_object($library)) {
+
+            if (!$name)
+                $name = strtolower(get_class($library));
+
         } else {
-            trigger_error('Error: Could not load library.' . $file . '!');
-            exit();
+
+            $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
+            $file = $this->config->get("library_path") . $library . ".php";
+            if (file_exists($file) && realpath($file) == $file) {
+                include_once($file);
+                $library = new $class($this->registry);
+                if (!$name)
+                    $name = str_replace('/', '_', $library);
+            } else {
+                throw new \InvalidFileException('Error: Could not load library.' . $file . '!');
+                exit();
+            }
+
         }
+        $this->registry->set($name, $library);
+
         return true;
     }
 
