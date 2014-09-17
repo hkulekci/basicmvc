@@ -48,7 +48,7 @@ final class Loader
                 if (!$name)
                     $name = str_replace('/', '_', $library);
             } else {
-                throw new \InvalidFileException('Error: Could not load library.' . $file . '!');
+                trigger_error('Error: Could not load library.' . $file . '!');
                 exit();
             }
 
