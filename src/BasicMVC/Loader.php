@@ -27,9 +27,28 @@ final class Loader
     }
 
     /**
-     * Load Library to registry
-     * @param  string|object                $level
-     * @throws \InvalidFileException        If invalid file
+     *  Load Library to registry
+     *
+     *  You can use directly this libraries from your controller. For example,
+     *  you have a document library and you add it to basicmvc on index.php
+     *  like that:
+     *
+     *      $basicmvc->load->library("document");
+     *
+     *  If you send your library name directly, loader, try to find document
+     *  library according to your library path which you are set on basicmvc
+     *  configuration. If you send an object to loader,
+     *
+     *      $basicmvc->load->library(new Document($registry));
+     *
+     *  The loader append this object to basicmvc libraries directly.
+     *  Then, you can use this library in controller easily. Example usage:
+     *
+     *      // ... in home controller
+     *      $this->document->document_method($arguments, ...);
+     *
+     *  @param  string|object                $level
+     *  @throws \InvalidFileException        If invalid file
      */
     public function library($library, $name = "")
     {
@@ -43,10 +62,11 @@ final class Loader
             $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
             $file = $this->config->get("library_path") . $library . ".php";
             if (file_exists($file) && realpath($file) == $file) {
-                include_once($file);
-                $library = new $class($this->registry);
                 if (!$name)
                     $name = str_replace('/', '_', $library);
+
+                include_once($file);
+                $library = new $class($this->registry);
             } else {
                 trigger_error('Error: Could not load library.' . $file . '!');
                 exit();
