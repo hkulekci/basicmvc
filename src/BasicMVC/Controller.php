@@ -16,6 +16,8 @@ abstract class Controller
     {
         $this->registry = $registry;
         $this->data = array_merge((array)$this->config->get("template_constants"), (array)$this->data);
+        $hook_response = $this->hooks->execute_hooks("before_controller", "controller");
+        $this->data = array_merge((array)$hook_response, (array)$this->data);
     }
 
     public function __get($key)
@@ -61,7 +63,7 @@ abstract class Controller
 
         if (file_exists($file)) {
             include_once($file);
-            
+
             $controller = new $class($this->registry);
 
             if (is_callable(array($controller, $method))) {
@@ -94,4 +96,4 @@ abstract class Controller
         return $this->app->view()->fetch($template_file);
     }
 
-} // END Controller class 
+} // END Controller class

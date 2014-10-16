@@ -46,11 +46,13 @@ class BasicMVC
         $configs->set("models_path", $app_config['models_path']);
         $this->registry->set("config", $configs);
 
+        $this->registry->set("hooks", new Hooks((array)$this->config->get("hooks")));
+
         $loader = new Loader($this->registry);
         $this->registry->set("load", $loader);
 
     }
-    
+
     public function __get($key)
     {
         return $this->registry->get($key);
