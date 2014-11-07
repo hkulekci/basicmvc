@@ -35,13 +35,15 @@ class Hooks {
 
     public function execute_hooks($tag, $args = "")
     {
+        $response = array();
         $tag = trim($tag);
         if ($this->hook_exist($tag)) {
             foreach ($this->hooks as $hooks) {
                 foreach ($hooks as $hook) {
-                    call_user_func($hook, $args);
+                    $response = array_merge((array)call_user_func($hook, $args), $response);
                 }
             }
         }
+        return $response;
     }
 }
