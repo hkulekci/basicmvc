@@ -53,18 +53,17 @@ final class Loader
     public function library($library, $name = "")
     {
         if (is_object($library)) {
-
-            if (!$name)
+            if (!$name) {
                 $name = strtolower(get_class($library));
-
+            }
         } else {
 
             $class = preg_replace('/[^a-zA-Z0-9]/', '', $library);
             $file = $this->config->get("library_path") . $library . ".php";
             if (file_exists($file) && realpath($file) == $file) {
-                if (!$name)
+                if (!$name) {
                     $name = str_replace('/', '_', $library);
-
+                }
                 include_once($file);
                 $library = new $class($this->registry);
             } else {
